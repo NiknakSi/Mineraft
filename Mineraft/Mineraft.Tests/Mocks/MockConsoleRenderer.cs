@@ -1,0 +1,45 @@
+﻿using System;
+using Mineraft.Business;
+using Mineraft.Business.Services.Contracts;
+
+namespace Mineraft.Tests.Mocks
+{
+    public class MockConsoleRenderer : IOutputRenderer
+    {
+        public string WindowTitle { get; set; }
+        public bool ShowCursor { get; set; }
+
+        public ConsoleKey KeyToRead { get; set; }
+
+        public ConsoleKey ReadInput => KeyToRead;
+
+        public int WindowWidth { get; set; }
+        public int WindowHeight { get; set; }
+        public ConsoleColor BackgroundColor { get; set; }
+        public ConsoleColor ForegroundColor { get; set; }
+
+        public void Clear()
+        { }
+
+        public void ResetColors()
+        { }
+
+        public void SetWindowSize(int width, int height)
+        { }
+
+        public void RenderSingle(string value)
+        { }
+
+        public void Flush()
+        { }
+
+        public void RenderGroupWithFlush(string value)
+        { }
+
+        public void SetGameDefaultColors()
+        { }
+
+        public void RenderSingle(Glyph value)
+        { }
+    }
+}
