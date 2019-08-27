@@ -6,14 +6,14 @@ namespace Mineraft.Tests
     [TestFixture]
     public class TestUtils
     {
-        [TestCase(Enums.SquareStatus.Safe, ExpectedResult = "🌊", Description = "Safe square displays as wave")]
-        [TestCase(Enums.SquareStatus.Mine, ExpectedResult = "💣", Description = "Mine square displays as bomb")]
-        [TestCase(Enums.SquareStatus.Debris, ExpectedResult = "💥", Description = "Debris square displays as exposion")]
-        public string CanConvertSquareToGraphic(Enums.SquareStatus squareStatus)
-        {
-            //Act
-            return Utils.SquareToGraphic(squareStatus);
-        }
+        //[TestCase(Enums.SquareStatus.Safe, ExpectedResult = "🌊", Description = "Safe square displays as wave")]
+        //[TestCase(Enums.SquareStatus.Mine, ExpectedResult = "💣", Description = "Mine square displays as bomb")]
+        //[TestCase(Enums.SquareStatus.Debris, ExpectedResult = "💥", Description = "Debris square displays as exposion")]
+        //public string CanConvertSquareToGraphic(Enums.SquareStatus squareStatus)
+        //{
+        //    //Act
+        //    return Utils.SquareToGraphic(squareStatus);
+        //}
 
         [Test]
         public void CanConvertStringToLine()

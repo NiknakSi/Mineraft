@@ -7,6 +7,7 @@ namespace Mineraft.Business.Services
 {
     public class Board : IBoard
     {
+        private readonly IOutputRenderer _Output;
         private readonly IPlayer _Player;
 
         private Enums.SquareStatus[,] _Squares;
@@ -24,17 +25,20 @@ namespace Mineraft.Business.Services
             }
         }
 
-        public Board(IPlayer player)
+        public Board(IOutputRenderer output, IPlayer player)
         {
+            _Output = output;
             _Player = player;
         }
 
-        public void Init(int width, int height)
+        public void Init(int width, int height, double difficultyFactor)
         {
             if (width < 1 || width > 26)
                 throw new ArgumentOutOfRangeException(nameof(width), "Width must be between between 1 and 26 inclusive");
             if (height < 1 || height > 26)
                 throw new ArgumentOutOfRangeException(nameof(height), "Height must be between between 1 and 26 inclusive");
+            if (difficultyFactor < 0 || difficultyFactor > 1)
+                throw new ArgumentOutOfRangeException(nameof(difficultyFactor), "DifficultyFactor must be a decimal between 0 and 1 inclusive");
 
             Width = width;
             Height = height;
@@ -46,8 +50,8 @@ namespace Mineraft.Business.Services
             //add squares to the board, some of which are mines
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
-                    _Squares[x, y] = random.Next(1, width) > (width / MineraftApplication.DIFFICULTYFACTOR)
-                        ? Enums.SquareStatus.Safe : Enums.SquareStatus.Mine;
+                    _Squares[x, y] = random.NextDouble() < difficultyFactor
+                        ? Enums.SquareStatus.Mine : Enums.SquareStatus.Safe;
         }
 
         public List<List<Glyph>> Render(bool showMines = false)
@@ -96,7 +100,7 @@ namespace Mineraft.Business.Services
                 {
                     //display the player icon or mine field square as necessary
                     if (_Player.PositionX == x && _Player.PositionY == y)
-                        line.Add(new Glyph("⛵️"));
+                        line.Add(new Glyph(_Output.EmojiSupport ? "⛵️" : "|>"));
                     else
                     {
                         //show a mine location only if required (e.g. game is over)
@@ -104,7 +108,7 @@ namespace Mineraft.Business.Services
                         if (square == Enums.SquareStatus.Mine && !showMines)
                             square = Enums.SquareStatus.Safe;
 
-                        line.Add(new Glyph(Utils.SquareToGraphic(square)));
+                        line.Add(new Glyph(_Output.ConvertGameSquareToGlyphValue(square)));
                     }
                 }
 

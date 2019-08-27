@@ -17,6 +17,10 @@ namespace Mineraft.Tests.Mocks
         public int WindowHeight { get; set; }
         public ConsoleColor BackgroundColor { get; set; }
         public ConsoleColor ForegroundColor { get; set; }
+        public bool EmojiSupport => false;
+
+        public void Init(string gameTitle)
+        { }
 
         public void Clear()
         { }
@@ -41,5 +45,10 @@ namespace Mineraft.Tests.Mocks
 
         public void RenderSingle(Glyph value)
         { }
+
+        public string ConvertGameSquareToGlyphValue(Enums.SquareStatus square)
+        {
+            return " ";
+        }
     }
 }

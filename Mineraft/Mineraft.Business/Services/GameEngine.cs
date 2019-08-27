@@ -13,10 +13,13 @@ namespace Mineraft.Business.Services
         private readonly IPlayer _Player;
 
         private string _DesiredStartPosition = "";
+        private string _GameTitle = "";
+        private double _DifficultyFactor;
+        private int _StartLives;
 
         public Enums.GameState State { get; private set; }
-        public Enums.Difficulty Difficulty { get; private set; }
-        public int LivesRemaining => MineraftApplication.STARTLIVES - _Board.ExplodedMines;
+        public Enums.Difficulty DifficultySelection { get; private set; }
+        public int LivesRemaining => _StartLives - _Board.ExplodedMines;
         public int MoveCounter { get; private set; }
 
         public GameEngine(IOutputRenderer output, IBoard board, IPlayer player)
@@ -26,12 +29,36 @@ namespace Mineraft.Business.Services
             _Player = player;
         }
 
+        public void Init(string gameTitle, double difficultyFactor, int startLives)
+        {
+            _GameTitle = gameTitle;
+            _DifficultyFactor = difficultyFactor;
+            _StartLives = startLives;
+
+            _Output.Init(gameTitle);
+
+            Reset();
+        }
+
+        public void Reset()
+        {
+            _Output.SetGameDefaultColors();
+            State = Enums.GameState.DifficultySelect;
+            _DesiredStartPosition = string.Empty;
+            MoveCounter = 0;
+
+            ConfigureBoard(DifficultySelection);
+            _Player.UpdatePosition(-1, -1);
+            _Player.OnTheBoard = false;
+            RenderToOutput();
+        }
+
         public void SetDifficulty(Enums.Difficulty difficulty)
         {
             if (State != Enums.GameState.DifficultySelect)
                 return;
 
-            Difficulty = difficulty;
+            DifficultySelection = difficulty;
             State = Enums.GameState.StartPositionSelect;
 
             ConfigureBoard(difficulty);
@@ -58,7 +85,7 @@ namespace Mineraft.Business.Services
                     break;
             }
 
-            _Board.Init(boardWidth, boardHeight);
+            _Board.Init(boardWidth, boardHeight, _DifficultyFactor);
         }
 
         public void SetDesiredStartPosition(int? positionInput)
@@ -88,19 +115,6 @@ namespace Mineraft.Business.Services
             State = Enums.GameState.FreeMovement;
             _Player.UpdatePosition(-1, position - 1);
             _Player.OnTheBoard = TryMove(Enums.Direction.East);
-        }
-
-        public void Reset()
-        {
-            _Output.SetGameDefaultColors();
-            State = Enums.GameState.DifficultySelect;
-            _DesiredStartPosition = string.Empty;
-            MoveCounter = 0;
-
-            ConfigureBoard(Difficulty);
-            _Player.UpdatePosition(-1, -1);
-            _Player.OnTheBoard = false;
-            RenderToOutput();
         }
 
         public bool TryMove(Enums.Direction direction)
@@ -183,7 +197,7 @@ namespace Mineraft.Business.Services
         {
             var gameLines = new List<List<Glyph>>();
 
-            var gameTitle = $"{Utils.SquareToGraphic(Enums.SquareStatus.Mine)} Welcome to {MineraftApplication.TITLE} {Utils.SquareToGraphic(Enums.SquareStatus.Mine)}";
+            var gameTitle = $"{_Output.ConvertGameSquareToGlyphValue(Enums.SquareStatus.Mine)} Welcome to {_GameTitle} {_Output.ConvertGameSquareToGlyphValue(Enums.SquareStatus.Mine)}";
             var padding = (_Output.WindowWidth - gameTitle.Length) / 2;
 
             //insert the main heading

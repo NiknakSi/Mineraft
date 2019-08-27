@@ -1,7 +1,10 @@
 # MINERAFT 
 This is a simple console app written in .NET Core 2.2. The player needs to navigate their raft from left to right (West to East) while avoiding the hidden mines. 5 lives are available and the game includes 3 difficulty settings.
 
-Emojis are used to represent features of the game board. You'll need macOS or Windows 10 >=1809 for this to work. Future builds may include better cross-platform support.
+Emojis are used to represent features of the game board. You'll need macOS or Linux for this to work. Windows shows an ASCII representation of the game elements as follows:
+- <> - mine
+- XX - exploded mine
+- |> - the raft
 
 ## Usage
 1. Compile the code using dotnet, VSCode, Visual Studio for Mac, or Visual Studio 2019 - the only requirement is .NET Core 2.2 SDK

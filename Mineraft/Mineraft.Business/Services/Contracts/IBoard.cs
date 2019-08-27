@@ -27,7 +27,8 @@ namespace Mineraft.Business.Services.Contracts
         /// </summary>
         /// <param name="width">Number of grid squares for the board width</param>
         /// <param name="height">Number of grid squares for the board width</param>
-        void Init(int width, int height);
+        /// <param name="difficultyFactor">A value between 0 and 1 to control the liklihood of a mine being spawned - higher value increases difficulty</param>
+        void Init(int width, int height, double difficultyFactor);
 
         /// <summary>
         /// Genrates the lines which represent the board

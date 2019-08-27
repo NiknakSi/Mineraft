@@ -47,7 +47,7 @@ namespace Mineraft.Tests
             gameService.Reset();
             gameService.SetDifficulty(Business.Enums.Difficulty.Hard);
 
-            Assert.AreEqual(Business.Enums.Difficulty.Hard, gameService.Difficulty, "Difficulty was not Hard after selecting difficulty");
+            Assert.AreEqual(Business.Enums.Difficulty.Hard, gameService.DifficultySelection, "Difficulty was not Hard after selecting difficulty");
             Assert.AreEqual(Business.Enums.GameState.StartPositionSelect, gameService.State, "Game state was not StartPositionSelect after selecting difficulty");
             Assert.AreEqual(26, boardService.Width, "Board width was not 26 after selecting Hard difficulty");
         }

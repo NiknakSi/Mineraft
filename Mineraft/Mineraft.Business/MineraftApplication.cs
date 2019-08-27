@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Mineraft.Business.Services.Contracts;
 
 namespace Mineraft.Business
@@ -9,11 +8,9 @@ namespace Mineraft.Business
     /// </summary>
     public class MineraftApplication
     {
-        public const string TITLE = "MINERAFT";
-        public const int DIFFICULTYFACTOR = 5; //smaller numbers mean more mines
-        public const int STARTLIVES = 5;
-        private const int MINIMUMWINDOWCOLS = 120;
-        private const int MINIMUMWINDOWROWS = 35;
+        private const string TITLE = "MINERAFT";
+        private const double DIFFICULTYFACTOR = 0.1; //bigger number mean more mines
+        private const int STARTLIVES = 5;
 
         private readonly IOutputRenderer _Output;
         private readonly IGameEngine _GameEngine;
@@ -29,15 +26,8 @@ namespace Mineraft.Business
         /// </summary>
         public void Run()
         {
-            _Output.WindowTitle = TITLE;
-
-            //configure the window size
-            EnsureWindowSize(MINIMUMWINDOWCOLS, MINIMUMWINDOWROWS).Wait();
-            
-            _Output.ShowCursor = false;
-
-            //reset and init the game engine
-            _GameEngine.Reset();
+            //init the game engine
+            _GameEngine.Init(TITLE, DIFFICULTYFACTOR, STARTLIVES);
 
             //listen for some user input
             var keyPress = _Output.ReadInput;
@@ -106,26 +96,6 @@ namespace Mineraft.Business
 
             _Output.ResetColors();
             _Output.ShowCursor = true;
-        }
-
-        /// <summary>
-        /// Ensure that the console window is big enough to house the game properly either by
-        /// automatically sizing it or waiting for the user to resize it
-        /// </summary>
-        /// <param name="width">Required nubmer of columns</param>
-        /// <param name="height">Required number of rows</param>
-        private async Task EnsureWindowSize(int width, int height)
-        {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                _Output.SetWindowSize(width, height);
-
-            //on mac/linux we can't automatically set the size so it has to be done by the user
-            if (_Output.WindowWidth < width || _Output.WindowHeight < height)
-                _Output.RenderGroupWithFlush($"Please enlarge the window to {width}x{height} minimum");
-
-            //wait for the user to resize the window
-            while (_Output.WindowWidth < width || _Output.WindowHeight < height)
-                await Task.Delay(500);
         }
     }
 }

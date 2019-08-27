@@ -13,7 +13,7 @@
         /// <summary>
         /// The selected difficulty of the game
         /// </summary>
-        Enums.Difficulty Difficulty { get; }
+        Enums.Difficulty DifficultySelection { get; }
 
         /// <summary>
         /// The number of lives remaining for this game
@@ -24,6 +24,19 @@
         /// Register each legal game move
         /// </summary>
         int MoveCounter { get; }
+
+        /// <summary>
+        /// Initialise the game engine with some settings
+        /// </summary>
+        /// <param name="gameTitle">Can be used by the renderer and elsewhere</param>
+        /// <param name="difficultyFactor">Used when the board generates the mine field</param>
+        /// <param name="startLives">Number of lives the player should start each game with</param>
+        void Init(string gameTitle, double difficultyFactor, int startLives);
+
+        /// <summary>
+        /// Resets the game state back to the difficulty selection screen
+        /// </summary>
+        void Reset();
 
         /// <summary>
         /// Set the game difficulty to a new level
@@ -46,11 +59,6 @@
         /// Takes all of the game elements for the current state and generates and sends them to the output renderer
         /// </summary>
         void RenderToOutput();
-
-        /// <summary>
-        /// Resets the game state back to the difficulty selection screen
-        /// </summary>
-        void Reset();
 
         /// <summary>
         /// Tries to move the player in the specified direction, and returns whether this was successful or not

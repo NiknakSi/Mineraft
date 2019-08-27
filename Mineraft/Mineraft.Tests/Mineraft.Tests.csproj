@@ -19,4 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Mineraft.Business\Mineraft.Business.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove=".DS_Store" />
+  </ItemGroup>
 </Project>
