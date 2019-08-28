@@ -24,6 +24,7 @@ namespace Mineraft.Business.Services
         public void Init(string gameTitle)
         {
             WindowTitle = gameTitle;
+            Clear();
 
             //configure the window size
             EnsureWindowSize(MINIMUMWINDOWCOLS, MINIMUMWINDOWROWS).Wait();

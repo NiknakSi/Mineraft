@@ -96,6 +96,7 @@ namespace Mineraft.Business
 
             _Output.ResetColors();
             _Output.ShowCursor = true;
+            _Output.Clear();
         }
     }
 }
